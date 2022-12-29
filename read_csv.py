@@ -1,4 +1,5 @@
 import csv
+import re
 
 def read_csv(path):
     with open(path, 'r') as csv_file:
@@ -12,7 +13,17 @@ def read_csv(path):
         return data
 
 
-if __name__ == '__main__':
+def population_by_country(country):
     data = read_csv('./world_population.csv')
-    print(data[0])
+    year_population = {}
+    for dictionary in data:
+        for key in dictionary:
+            if dictionary['Country/Territory'] == country:
+                if re.search('^\d{4}', key):
+                    year_population.setdefault(key[:4], int(dictionary[key]))
+    return year_population
+
+
+if __name__ == '__main__':
+    print(population_by_country('Mexico'))
 
